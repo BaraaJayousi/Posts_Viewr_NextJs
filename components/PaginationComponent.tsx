@@ -3,7 +3,7 @@ import { generatePagination } from '@/lib/generatePagination';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-
+import { Suspense } from 'react'
 
 const PaginationComponent = ({ totalPages }: { totalPages: number }) => {
   const pathname = usePathname();
@@ -20,28 +20,31 @@ const PaginationComponent = ({ totalPages }: { totalPages: number }) => {
   const allPages = generatePagination(currentPage, totalPages);
 
   return (
-    <div className="inline-flex">
-      <div className="flex -space-x-px">
-        {allPages.map((page, index) => {
-          let position: 'first' | 'last' | 'single' | 'middle' | undefined;
+    <Suspense>
 
-          if (index === 0) position = 'first';
-          if (index === allPages.length - 1) position = 'last';
-          if (allPages.length === 1) position = 'single';
-          if (page === '...') position = 'middle';
+      <div className="inline-flex">
+        <div className="flex -space-x-px">
+          {allPages.map((page, index) => {
+            let position: 'first' | 'last' | 'single' | 'middle' | undefined;
 
-          return (
-            <PaginationNumber
-              key={`${page}-${index}`}
-              href={createPageURL(page)}
-              page={page}
-              position={position}
-              isActive={currentPage === page}
-            />
-          );
-        })}
+            if (index === 0) position = 'first';
+            if (index === allPages.length - 1) position = 'last';
+            if (allPages.length === 1) position = 'single';
+            if (page === '...') position = 'middle';
+
+            return (
+              <PaginationNumber
+                key={`${page}-${index}`}
+                href={createPageURL(page)}
+                page={page}
+                position={position}
+                isActive={currentPage === page}
+              />
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </Suspense>
   )
 }
 
