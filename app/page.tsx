@@ -4,6 +4,7 @@ import PostsComponent from "@/components/PostsComponent";
 // import Image from "next/image";
 import { getPosts } from "@/lib/getPosts";
 import { getTotalPages } from "@/lib/utils";
+import { Suspense } from 'react'
 
 export default async function  Home() {
   const posts= await getPosts()
@@ -13,11 +14,15 @@ export default async function  Home() {
       
       <HeroComponent/>
       <div className="flex justify-center my-10">
-        <PaginationComponent totalPages={totalPages}/>
+        <Suspense>
+          <PaginationComponent totalPages={totalPages}/>
+        </Suspense>
       </div>
       <PostsComponent posts={posts}/>
       <div className="flex justify-center my-10">
-        <PaginationComponent totalPages={totalPages}/>
+        <Suspense>
+          <PaginationComponent totalPages={totalPages}/>
+        </Suspense>
       </div>
     </main>
   );

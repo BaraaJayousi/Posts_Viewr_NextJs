@@ -20,31 +20,28 @@ const PaginationComponent = ({ totalPages }: { totalPages: number }) => {
   const allPages = generatePagination(currentPage, totalPages);
 
   return (
-    <Suspense>
+  <div className="inline-flex">
+    <div className="flex -space-x-px">
+      {allPages.map((page, index) => {
+        let position: 'first' | 'last' | 'single' | 'middle' | undefined;
 
-      <div className="inline-flex">
-        <div className="flex -space-x-px">
-          {allPages.map((page, index) => {
-            let position: 'first' | 'last' | 'single' | 'middle' | undefined;
+        if (index === 0) position = 'first';
+        if (index === allPages.length - 1) position = 'last';
+        if (allPages.length === 1) position = 'single';
+        if (page === '...') position = 'middle';
 
-            if (index === 0) position = 'first';
-            if (index === allPages.length - 1) position = 'last';
-            if (allPages.length === 1) position = 'single';
-            if (page === '...') position = 'middle';
-
-            return (
-              <PaginationNumber
-                key={`${page}-${index}`}
-                href={createPageURL(page)}
-                page={page}
-                position={position}
-                isActive={currentPage === page}
-              />
-            );
-          })}
-        </div>
-      </div>
-    </Suspense>
+        return (
+          <PaginationNumber
+            key={`${page}-${index}`}
+            href={createPageURL(page)}
+            page={page}
+            position={position}
+            isActive={currentPage === page}
+          />
+        );
+      })}
+    </div>
+  </div>
   )
 }
 
